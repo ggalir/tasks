@@ -62,7 +62,7 @@ if(isset($_POST["login"]) && isset($_POST["password"])){
             <button class="btn btn-primary btn-lg btn-block" type="submit">Stwórz konto</button>
 
             <div class="text-center my-2">
-                <p>Posiadasz konto?<a href="login.php">Zaloguj się!</a></p>
+                <p>Posiadasz konto? <a href="login.php">Zaloguj się!</a></p>
             </div>
             </from>
           </div>

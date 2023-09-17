@@ -12,7 +12,6 @@ if(@$_GET["action"] == "logout"){
 }
 
 $id = $_SESSION["id"];
-echo $id;
 
 ?>
 <!DOCTYPE html>
@@ -30,10 +29,44 @@ echo $id;
 </head>
 <body>
 
-<div class="w-100 d-flex p-2 position-absolute">
+<div class="w-100 d-flex p-2">
     <a href="index.php?action=logout" class="btn btn-primary ms-auto btn-sm">Wyloguj</a>
 </div>
 
+
+<div class="col-8 offset-2 col-md-4 offset-md-4 card">
+<div class="card-body">
+<form method="post">
+    <h4>Dodaj zadanie:</h4>
+    <hr>
+    <label class="form-label">Tytuł:</label>
+    <input type="text" name="title" class="form-control" required>
+    <br>
+    <label class="form-label">Opis:</label>
+    <textarea name="caption" class="form-control" required></textarea>
+    <br>
+    <div class="d-inline-flex">
+        <span class="form-label">Priorytet <span class="text-muted small">(1 - największy):</span> </span>
+        <div style="width: 10px;"></div>
+        <select class="form-select form-select-sm" name="priority" style="width: 55px;">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+    </div>
+    <div class="mt-2">
+        <label class="form-label">Termin wykonania:</label>
+        <input type="date" name="date"  min="<?php echo date("Y-m-d"); ?>" required>
+    </div>
+    <hr>
+    <div class="d-flex flex-row-reverse">
+        <button class="btn btn-primary" type="submit">Dodaj</button>
+    </div>
+    </form>
+    </div>
+</div>
 
 </body>
 </html>
