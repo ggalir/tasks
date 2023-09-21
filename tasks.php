@@ -12,16 +12,6 @@ if(@$_GET["action"] == "logout"){
     header("Location: index.php");
 }
 
-if(isset($_POST["title"])){
-    $title = $_POST["title"];
-    $caption = $_POST["caption"];
-    $date = $_POST["date"];
-    $priority = $_POST["priority"];
-    
-    $add = mysqli_query($c, "INSERT INTO `tasks` SET `user_id`='$id', `title`='$title', `caption`='$caption', `date`='$date', `priority`='$priority';");
-    header("Location:index.php");
-}
-
 ?>
 <!DOCTYPE html>
 <html lang="pl-PL">
@@ -51,36 +41,6 @@ if(isset($_POST["title"])){
     </div>
 </div>
 
-<div class="col-8 offset-2 col-md-4 offset-md-4 mt-5">
-<form method="post">
-    <h4>Dodaj zadanie:</h4>
-    <label class="form-label">Tytuł:</label>
-    <input type="text" name="title" class="form-control" required>
-    <br>
-    <label class="form-label">Opis:</label>
-    <textarea name="caption" class="form-control" required></textarea>
-    <br>
-    <div class="row">
-        <div class="col-6">
-            <span class="form-label">Priorytet: </span>
-            <select class="form-select mt-2" name="priority" style="width: 60px;">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-            </select>
-        </div>
-        <div class="col-6">
-            <label class="form-label">Termin: </label>
-            <input type="date" class="form-control" name="date"  min="<?php echo date("Y-m-d"); ?>" required>
-        </div>
-    
-    <div class="d-flex mt-4">
-        <button class="btn btn-primary ms-auto" type="submit">Dodaj</button>
-    </div>
-    </form>
-</div>
 
 </body>
 </html>
