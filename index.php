@@ -62,10 +62,10 @@ if(@$_GET["action"] == "logout"){
     ?>
         <table class="table table-striped table-hover">
         <thead>
-            <tr>
+            <tr>    
             <th scope="col">#</th>
             <th scope="col">Nazwa</th>
-            <th scope="col">Data</th>
+            <th scope="col">Termin</th>
             <th scope="col" class="d-none d-lg-table-cell">Autor</th>
             <th scope="col" class="d-none d-lg-table-cell">Priorytet</th>
             </tr>
@@ -76,10 +76,10 @@ if(@$_GET["action"] == "logout"){
         ?>
             <tr>
                 <td scope="col"><a href="index.php?done=<?php echo $task["id"] ?>">.</a></td>
-                <td scope="col">Nazwa</td>
-                <td scope="col">Data</td>
-                <td scope="col" class="d-none d-lg-table-cell">Autor</td>
-                <td scope="col" class="d-none d-lg-table-cell">Priorytet</td>
+                <td scope="col"><?php echo $task["title"]; ?></td>
+                <td scope="col"><?php echo $task["date"]; ?></td>
+                <td scope="col" class="d-none d-lg-table-cell"></td>
+                <td scope="col" class="d-none d-lg-table-cell"></td>
             </tr>
         <?php
     } 
