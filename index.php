@@ -12,16 +12,6 @@ if(@$_GET["action"] == "logout"){
     header("Location: index.php");
 }
 
-if(isset($_POST["title"])){
-    $title = $_POST["title"];
-    $caption = $_POST["caption"];
-    $date = $_POST["date"];
-    $priority = $_POST["priority"];
-    
-    $add = mysqli_query($c, "INSERT INTO `tasks` SET `user_id`='$id', `title`='$title', `caption`='$caption', `date`='$date', `priority`='$priority';");
-    header("Location:index.php");
-}
-
 ?>
 <!DOCTYPE html>
 <html lang="pl-PL">
@@ -45,42 +35,55 @@ if(isset($_POST["title"])){
 <div class="w-100 p-5 mb-3 d-flex justify-content-center" style="background: whitesmoke;">
     <div style="width: fit-content;">
         <h1 class="mx-auto" style="width: fit-content;">TO-DO List</h1>
-        <a href="index.php" class="btn btn-primary">Dodaj</a>
-        <a href="tasks.php" class="btn btn-success">Zadania</a>
-        <a href="tasks.php" class="btn btn-danger">Edytuj/Usuń</a>
+        <a href="add.php" class="btn btn-primary">Dodaj</a>
+        <a href="index.php" class="btn btn-success">Zadania</a>
+        <a href="index.php" class="btn btn-danger">Edytuj/Usuń</a>
     </div>
 </div>
 
-<div class="col-8 offset-2 col-md-4 offset-md-4 mt-5">
-<form method="post">
-    <h4>Dodaj zadanie:</h4>
-    <label class="form-label">Tytuł:</label>
-    <input type="text" name="title" class="form-control" required>
-    <br>
-    <label class="form-label">Opis:</label>
-    <textarea name="caption" class="form-control" required></textarea>
-    <br>
-    <div class="row">
-        <div class="col-6">
-            <span class="form-label">Priorytet: </span>
-            <select class="form-select mt-2" name="priority" style="width: 60px;">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-            </select>
-        </div>
-        <div class="col-6">
-            <label class="form-label">Termin: </label>
-            <input type="date" class="form-control" name="date"  min="<?php echo date("Y-m-d"); ?>" required>
-        </div>
-    
-    <div class="d-flex mt-4">
-        <button class="btn btn-primary ms-auto" type="submit">Dodaj</button>
-    </div>
-    </form>
-</div>
+<div class="col-8 offset-2 col-md-6 offset-md-3 mt-5">
+    <div class="btn-group btn-group-sm ms-md-5 my-2" role="group">
+        <a href="index.php?display=mine" class="btn btn-success">Moje</a>
+        <a href="index.php?display=all" class="btn btn-success">Wszystkie</a>
+    </div>  
 
+    <?php
+    if(@$_GET["displya"]=="mine"){
+        $query = mysqli_query($c, "SELECT * FROM `tasks` WHERE `user_id` = '$id'");
+    }
+    else{
+        $query = mysqli_query($c, "SELECT * FROM `tasks`;");
+    }
+
+    if(mysqli_num_rows($query) == 0){
+       
+    }
+    else {
+    ?>
+        <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nazwa</th>
+            <th scope="col">Data</th>
+            <th scope="col" class="d-none d-lg-table-cell">Autor</th>
+            <th scope="col" class="d-none d-lg-table-cell">Priorytet</th>
+            </tr>
+        </thead>
+    <?php
+    }
+    while($task = mysqli_fetch_array($query)){
+        ?>
+            <tr>
+                <td scope="col"><a href="index.php?done=<?php echo $task["id"] ?>">.</a></td>
+                <td scope="col">Nazwa</td>
+                <td scope="col">Data</td>
+                <td scope="col" class="d-none d-lg-table-cell">Autor</td>
+                <td scope="col" class="d-none d-lg-table-cell">Priorytet</td>
+            </tr>
+        <?php
+    } 
+    ?>
+</div>
 </body>
 </html>
