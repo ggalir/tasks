@@ -90,12 +90,12 @@ if(@$_GET["action"] == "logout"){
         ?>
             <tr>
                 <td scope="col"></td>
-                <td scope="col">
-                    <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample">
+                <td scope="col" style="padding: 5px 0px 0px 5px;">
+                    <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#<?php echo "collapse" . $task["id"]; ?>">
                         <?php echo $task["title"]; ?>
                     </button>
                     <div>
-                        <div class="collapse collapse-horizontal my-2" id="collapseWidthExample">
+                        <div class="collapse collapse-horizontal my-2" id="<?php echo "collapse" . $task["id"]; ?>">
                             <div class="card card-body p-2" style="width: 150px;">
                             <?php echo $task["caption"]; ?>
                             </div>
