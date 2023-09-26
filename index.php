@@ -12,6 +12,16 @@ if(@$_GET["action"] == "logout"){
     header("Location: index.php");
 }
 
+// if(isset($_GET["done"])){
+//     //add veryficaton
+//     $id = $_GET["done"];
+//     $status = mysqli_query($c, "UPDATE FROM `tasks` WHERE `id` = ");
+// }
+
+// if(isset($_GET["cancel"])){
+
+//     //add veryficaton
+//}
 ?>
 <!DOCTYPE html>
 <html lang="pl-PL">
@@ -25,8 +35,12 @@ if(@$_GET["action"] == "logout"){
     <script
     src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
     </script>
+    <style>
+
+    </style>
 </head>
 <body>
+
 
 <div class="w-100 d-flex p-2 position-absolute">
     <a href="index.php?action=logout" class="btn btn-primary ms-auto btn-sm">Wyloguj</a>
@@ -49,10 +63,10 @@ if(@$_GET["action"] == "logout"){
 
     <?php
     if(@$_GET["displya"]=="mine"){
-        $query = mysqli_query($c, "SELECT * FROM `tasks` WHERE `user_id` = '$id'");
+        $query = mysqli_query($c, "SELECT * FROM `tasks` WHERE `user_id` = '$id', `status`!=2;");
     }
     else{
-        $query = mysqli_query($c, "SELECT * FROM `tasks`;");
+        $query = mysqli_query($c, "SELECT * FROM `tasks` WHERE `status`!=2;");
     }
 
     if(mysqli_num_rows($query) == 0){
@@ -75,11 +89,27 @@ if(@$_GET["action"] == "logout"){
     while($task = mysqli_fetch_array($query)){
         ?>
             <tr>
-                <td scope="col"><a href="index.php?done=<?php echo $task["id"] ?>">.</a></td>
-                <td scope="col"><?php echo $task["title"]; ?></td>
+                <td scope="col"></td>
+                <td scope="col">
+                    <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample">
+                        <?php echo $task["title"]; ?>
+                    </button>
+                    <div>
+                        <div class="collapse collapse-horizontal my-2" id="collapseWidthExample">
+                            <div class="card card-body p-2" style="width: 150px;">
+                            <?php echo $task["caption"]; ?>
+                            </div>
+                        </div>
+                    </div>
+                </td>
                 <td scope="col"><?php echo $task["date"]; ?></td>
-                <td scope="col" class="d-none d-lg-table-cell"><?php  ?></td>
-                <td scope="col" class="d-none d-lg-table-cell"></td>
+                <td scope="col" class="d-none d-lg-table-cell"><?php 
+                $u_id = $task["user_id"];
+                $q = mysqli_query($c, "SELECT * FROM `users` WHERE `id`='$u_id';");
+                $author = mysqli_fetch_row($q);
+                echo $author[1];
+                ?></td>
+                <td scope="col" class="d-none d-lg-table-cell"><?php echo $task["priority"]; ?></td>
             </tr>
         <?php
     } 
