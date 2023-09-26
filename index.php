@@ -55,11 +55,7 @@ if(@$_GET["action"] == "logout"){
     </div>
 </div>
 
-<div class="col-8 offset-2 col-md-6 offset-md-3 mt-5">
-    <div class="btn-group btn-group-sm ms-md-5 my-2" role="group">
-        <a href="index.php?display=mine" class="btn btn-success">Moje</a>
-        <a href="index.php?display=all" class="btn btn-success">Wszystkie</a>
-    </div>  
+
 
     <?php
     if(@$_GET["displya"]=="mine"){
@@ -70,10 +66,21 @@ if(@$_GET["action"] == "logout"){
     }
 
     if(mysqli_num_rows($query) == 0){
-       
+       ?>
+        <div class="w-100 text-center">
+        <h1>Jeszcze nic tutaj nie ma!</h1>
+        <p>Stwórz zadanie w zakładce <a href="add.php" >DODAJ</a>!</p>
+        </div>
+
+       <?php
     }
     else {
     ?> 
+    <div class="col-8 offset-2 col-md-6 offset-md-3 mt-5">
+    <div class="btn-group btn-group-sm ms-md-5 my-2" role="group">
+        <a href="index.php?display=mine" class="btn btn-success">Moje</a>
+        <a href="index.php?display=all" class="btn btn-success">Wszystkie</a>
+    </div>  
         <table class="table table-striped table-hover">
         <thead>
             <tr>    
@@ -89,26 +96,32 @@ if(@$_GET["action"] == "logout"){
     while($task = mysqli_fetch_array($query)){
         ?>
             <tr>
-                <td scope="col"></td>
+                <td scope="col">
+
+                </td>
+
                 <td scope="col" style="padding: 5px 0px 0px 5px;">
                     <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#<?php echo "collapse" . $task["id"]; ?>">
                         <?php echo $task["title"]; ?>
                     </button>
                     <div>
                         <div class="collapse collapse-horizontal my-2" id="<?php echo "collapse" . $task["id"]; ?>">
-                            <div class="card card-body p-2" style="width: 150px;">
+                            <div class="card card-body p-2" style="width: 200px; background: rgba(255,255,255,0.3);">
                             <?php echo $task["caption"]; ?>
                             </div>
                         </div>
                     </div>
                 </td>
+
                 <td scope="col"><?php echo $task["date"]; ?></td>
+
                 <td scope="col" class="d-none d-lg-table-cell"><?php 
                 $u_id = $task["user_id"];
                 $q = mysqli_query($c, "SELECT * FROM `users` WHERE `id`='$u_id';");
                 $author = mysqli_fetch_row($q);
                 echo $author[1];
                 ?></td>
+
                 <td scope="col" class="d-none d-lg-table-cell"><?php echo $task["priority"]; ?></td>
             </tr>
         <?php
