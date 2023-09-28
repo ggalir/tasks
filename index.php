@@ -59,12 +59,8 @@ if(isset($_GET["cancel"])){
 
 
     <?php
-    if(@$_GET["displya"]=="mine"){
-        $query = mysqli_query($c, "SELECT * FROM `tasks` WHERE `user_id` = '$id', `status`!=2;");
-    }
-    else{
-        $query = mysqli_query($c, "SELECT * FROM `tasks` WHERE `status`!=2;");
-    }
+    $query = mysqli_query($c, "SELECT * FROM `tasks` WHERE `user_id` = '$id';");
+
 
     if(mysqli_num_rows($query) == 0){
        ?>

@@ -11,6 +11,21 @@ if(@$_GET["action"] == "logout"){
     session_destroy();
     header("Location: index.php");
 }
+
+if(isset($_GET["delete"])){
+    $task_id = $_GET["delete"];
+    $query = mysqli_query($c, "SELECT * FROM `tasks` WHERE `id` = '$task_id';");
+    $task = mysqli_fetch_row($query);
+    if($task[1]==$id){
+        $delete = mysqli_query($c, "DELETE FROM `tasks` WHERE `id` = '$task_id';");
+    }
+    else {
+        ?>
+        <script>alert("nie hakuj")</script>
+        <?php
+    }
+
+}
 ?>
 <!DOCTYPE html>
 <html lang="pl-PL">
@@ -47,12 +62,8 @@ if(@$_GET["action"] == "logout"){
 
 
     <?php
-    if(@$_GET["displya"]=="mine"){
-        $query = mysqli_query($c, "SELECT * FROM `tasks` WHERE `user_id` = '$id', `status`!=2;");
-    }
-    else{
-        $query = mysqli_query($c, "SELECT * FROM `tasks` WHERE `status`!=2;");
-    }
+
+    $query = mysqli_query($c, "SELECT * FROM `tasks` WHERE `user_id`='$id';");
 
     if(mysqli_num_rows($query) == 0){
        ?>
