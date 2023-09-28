@@ -18,7 +18,7 @@ if(isset($_POST["title"])){
     $date = $_POST["date"];
     $priority = $_POST["priority"];
     
-    $add = mysqli_query($c, "INSERT INTO `tasks` SET `user_id`='$id', `title`='$title', `caption`='$caption', `date`='$date', `priority`='$priority';");
+    $add = mysqli_query($c, "INSERT INTO `tasks` SET `user_id`='$id', `title`='$title', `caption`='$caption', `date`='$date', `priority`='$priority', `status` = 0;");
     header("Location:index.php");
 }
 
@@ -47,7 +47,7 @@ if(isset($_POST["title"])){
         <h1 class="mx-auto" style="width: fit-content;">TO-DO List</h1>
         <a href="add.php" class="btn btn-primary">Dodaj</a>
         <a href="index.php" class="btn btn-success">Zadania</a>
-        <a href="index.php" class="btn btn-danger">Edytuj/Usuń</a>
+        <a href="edit.php" class="btn btn-danger">Edytuj/Usuń</a>
     </div>
 </div>
 

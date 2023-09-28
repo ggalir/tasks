@@ -20,6 +20,9 @@ if(isset($_POST["login"]) && isset($_POST["password"])){
 }
 }
 
+phpinfo();
+
+
 ?>
 <!DOCTYPE html>
 <html lang="pl-PL">

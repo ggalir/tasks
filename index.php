@@ -12,16 +12,17 @@ if(@$_GET["action"] == "logout"){
     header("Location: index.php");
 }
 
-// if(isset($_GET["done"])){
-//     //add veryficaton
-//     $id = $_GET["done"];
-//     $status = mysqli_query($c, "UPDATE FROM `tasks` WHERE `id` = ");
-// }
+if(isset($_GET["done"])){
+    //add veryficaton
+    $task_id = $_GET["done"];
+    $status = mysqli_query($c, "UPDATE `tasks` SET `status` = 1 WHERE `id` = '$task_id';");
+}
 
-// if(isset($_GET["cancel"])){
-
-//     //add veryficaton
-//}
+if(isset($_GET["cancel"])){
+    //add veryficaton
+    $task_id = $_GET["cancel"];
+    $status = mysqli_query($c, "UPDATE `tasks` SET `status` = 0 WHERE `id` = '$task_id';");
+}
 ?>
 <!DOCTYPE html>
 <html lang="pl-PL">
@@ -51,7 +52,7 @@ if(@$_GET["action"] == "logout"){
         <h1 class="mx-auto" style="width: fit-content;">TO-DO List</h1>
         <a href="add.php" class="btn btn-primary">Dodaj</a>
         <a href="index.php" class="btn btn-success">Zadania</a>
-        <a href="index.php" class="btn btn-danger">Edytuj/Usuń</a>
+        <a href="edit.php" class="btn btn-danger">Edytuj/Usuń</a>
     </div>
 </div>
 
@@ -97,7 +98,17 @@ if(@$_GET["action"] == "logout"){
         ?>
             <tr>
                 <td scope="col">
-
+                    <a class="btn btn-outline-secondary btn-sm p-0" style="height: 20px; width: 20px;" href="index.php?<?php 
+                    if($task["status"] == 0) echo "done=";
+                    else echo "cancel=";
+                    echo $task["id"]; ?>"><?php if($task["status"] == 1){
+                        ?>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                            <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+                            </svg>
+                        <?php
+                    } 
+                    else echo "&nbsp;";?></a>
                 </td>
 
                 <td scope="col" style="padding: 5px 0px 0px 5px;">
