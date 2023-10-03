@@ -1,4 +1,8 @@
 <?php
+/* SELECT * FROM zadania
+WHERE przypisane_do = 'Twój_ID' OR przypisane_do IN (SELECT ID_uzytkownika FROM przypisanie_zadania WHERE przypisane_do = 'Twój_ID');
+*/
+
 session_start();
 $c = mysqli_connect("localhost", "root", "", "tasks");
 $id = $_SESSION["id"];
@@ -25,6 +29,20 @@ if(isset($_GET["delete"])){
         <?php
     }
 
+}
+
+if(isset($_GET["edit"])){
+    $task_id = $_GET["edit"];
+    $query = mysqli_query($c, "SELECT * FROM `tasks` WHERE `id` = '$task_id';");
+    $task = mysqli_fetch_row($query);
+    if($task[1]==$id){
+        $edit = $task_id;
+    }
+    else {
+        ?>
+        <script>alert("nie hakuj")</script>
+        <?php
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -76,15 +94,15 @@ if(isset($_GET["delete"])){
     }
     else {
     ?> 
-    <div class="col-10 offset-1 col-md-6 offset-md-3 mt-5"> 
+    <div class=" col-12 col-md-10 offset-md-1"> 
         <table class="table table-striped table-hover">
         <thead>
             <tr>    
             <th scope="col">#</th>
             <th scope="col">Nazwa</th>
             <th scope="col">Termin</th>
-            <th scope="col" class="d-none d-lg-table-cell">Autor</th>
-            <th scope="col" class="d-none d-lg-table-cell">Priorytet</th>
+            <th scope="col" class="">Autor</th>
+            <th scope="col" class="">Priorytet</th>
             <th scope="col">Edytuj</th>
             <th scope="col">Usuń</th>
             </tr>
@@ -120,20 +138,32 @@ if(isset($_GET["delete"])){
 
                 <td scope="col"><?php echo $task["date"]; ?></td>
 
-                <td scope="col" class="d-none d-lg-table-cell"><?php 
+                <td scope="col" class=""><?php 
                 $u_id = $task["user_id"];
                 $q = mysqli_query($c, "SELECT * FROM `users` WHERE `id`='$u_id';");
                 $author = mysqli_fetch_row($q);
                 echo $author[1];
                 ?></td>
 
-                <td scope="col" class="d-none d-lg-table-cell"><?php echo $task["priority"]; ?></td>
+                <td scope="col" class=""><?php echo $task["priority"]; ?></td>
 
-                <td scope="col">
+                <td scope="col" <?php if($task["id"] == @$edit) echo "style=\"padding: 5px 0px 0px 5px;\""; ?>>
                     <a class="ms-3" href="edit.php?edit=<?php echo $task["id"]; ?>">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
-                    <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z"/>
-                    </svg>  
+                    <?php
+                    if($task["id"] == @$edit){
+                        ?>
+                        <input type="submit" value="edytuj" class="btn btn-primary btn-sm">
+                        <?php
+                    }
+                    else {
+                        ?>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                        <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z"/>
+                        </svg>      
+                        <?php
+                    } 
+                    ?>
+                    
                     </a>
                 </td>
 
