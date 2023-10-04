@@ -59,8 +59,18 @@ if(isset($_GET["cancel"])){
 
 
     <?php
-    $query = mysqli_query($c, "SELECT * FROM `tasks` WHERE `user_id` = '$id';");
-
+    if(isset($_GET["display"])){
+        if($_GET["display"] == "mine"){
+            $query = mysqli_query($c, "SELECT * FROM `tasks` WHERE `user_id` = '$id';");
+        }
+        else{
+            $query = mysqli_query($c, "SELECT * FROM `tasks`
+            WHERE `user_id` = '$id' OR `user_id` IN (SELECT `user_id` FROM `relations` WHERE `user_id` = '$id');");
+        }
+    }
+    else{
+        $query = mysqli_query($c, "SELECT * FROM `tasks` WHERE `user_id` = '$id';");
+    }
 
     if(mysqli_num_rows($query) == 0){
        ?>
@@ -97,7 +107,8 @@ if(isset($_GET["cancel"])){
                     <a class="btn btn-outline-secondary btn-sm p-0" style="height: 20px; width: 20px;" href="index.php?<?php 
                     if($task["status"] == 0) echo "done=";
                     else echo "cancel=";
-                    echo $task["id"]; ?>"><?php if($task["status"] == 1){
+                    echo $task["id"]; ?>">
+                    <?php if($task["status"] == 1){
                         ?>
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
                             <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>

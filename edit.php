@@ -81,7 +81,12 @@ if(isset($_GET["edit"])){
 
     <?php
 
-    $query = mysqli_query($c, "SELECT * FROM `tasks` WHERE `user_id`='$id';");
+    if(isset($_GET["edit"])){
+        $query = mysqli_query($c, "SELECT * FROM `tasks` WHERE `id`='$edit';");
+    }
+    else{
+        $query = mysqli_query($c, "SELECT * FROM `tasks` WHERE `user_id`='$id';");
+    }
 
     if(mysqli_num_rows($query) == 0){
        ?>
