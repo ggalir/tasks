@@ -60,16 +60,17 @@ if(isset($_GET["cancel"])){
 
     <?php
     if(isset($_GET["display"])){
-        if($_GET["display"] == "mine"){
-            $query = mysqli_query($c, "SELECT * FROM `tasks` WHERE `user_id` = '$id';");
+        if($_GET["display"] == "all"){
+            $query = mysqli_query($c, "SELECT * FROM `tasks`
+            WHERE `user_id` = '$id' OR `user_id` IN (SELECT `user_id` FROM `relations`);");
         }
         else{
-            $query = mysqli_query($c, "SELECT * FROM `tasks`
-            WHERE `user_id` = '$id' OR `user_id` IN (SELECT `user_id` FROM `relations` WHERE `user_id` = '$id');");
+            $query = mysqli_query($c, "SELECT * FROM `tasks` WHERE `user_id` = '$id';");
         }
     }
     else{
-        $query = mysqli_query($c, "SELECT * FROM `tasks` WHERE `user_id` = '$id';");
+        $query = mysqli_query($c, "SELECT * FROM `tasks`
+        WHERE `user_id` = '$id' OR `user_id` IN (SELECT `user_id` FROM `relations`);");
     }
 
     if(mysqli_num_rows($query) == 0){

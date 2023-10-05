@@ -16,6 +16,38 @@ if(@$_GET["action"] == "logout"){
     header("Location: index.php");
 }
 
+if(isset($_GET["edit"])){
+    $task_id = $_GET["edit"];
+    $query = mysqli_query($c, "SELECT * FROM `tasks` WHERE `id` = '$task_id';");
+    $task = mysqli_fetch_row($query);
+    if($task[1]==$id){
+
+        $edit = $task_id;
+
+        if(isset($_POST["id"])){
+            $title = $_POST["title"];
+        $caption = $_POST["caption"];
+        $date = $_POST["date"];
+        $user = $_POST["user"];
+        $priority = $_POST["priority"];
+        $taskid = $_POST["id"];
+        $edi = mysqli_query($c, "UPDATE `tasks` SET `title` = '$title', `caption` = '$caption', `date` = '$date', `priority` = '$priority' WHERE `id` = '$taskid'");
+
+            if($user != 0){
+                $add = mysqli_query($c, "INSERT INTO `relations` SET `user_id` = '$user', `task_id` = '$taskid';");
+            }
+
+        header("Location: edit.php");
+        }
+        
+    }
+    else {
+        ?>
+        <script>alert("nie hakuj")</script>
+        <?php
+    }
+}
+
 if(isset($_GET["delete"])){
     $task_id = $_GET["delete"];
     $query = mysqli_query($c, "SELECT * FROM `tasks` WHERE `id` = '$task_id';");
@@ -29,20 +61,6 @@ if(isset($_GET["delete"])){
         <?php
     }
 
-}
-
-if(isset($_GET["edit"])){
-    $task_id = $_GET["edit"];
-    $query = mysqli_query($c, "SELECT * FROM `tasks` WHERE `id` = '$task_id';");
-    $task = mysqli_fetch_row($query);
-    if($task[1]==$id){
-        $edit = $task_id;
-    }
-    else {
-        ?>
-        <script>alert("nie hakuj")</script>
-        <?php
-    }
 }
 ?>
 <!DOCTYPE html>
@@ -81,6 +99,8 @@ if(isset($_GET["edit"])){
 
     <?php
 
+    echo $_POST;
+
     if(isset($_GET["edit"])){
         $query = mysqli_query($c, "SELECT * FROM `tasks` WHERE `id`='$edit';");
     }
@@ -103,10 +123,10 @@ if(isset($_GET["edit"])){
         <table class="table table-striped table-hover">
         <thead>
             <tr>    
-            <th scope="col">#</th>
             <th scope="col">Nazwa</th>
+            <th scope="col">Opis</th>
             <th scope="col">Termin</th>
-            <th scope="col" class="">Autor</th>
+            <th scope="col" class="">Dodaj osoby</th>
             <th scope="col" class="">Priorytet</th>
             <th scope="col">Edytuj</th>
             <th scope="col">Usuń</th>
@@ -115,6 +135,62 @@ if(isset($_GET["edit"])){
     <?php
     }
     while($task = mysqli_fetch_array($query)){
+        if(isset($_GET["edit"])){
+            ?>
+            <tr>
+                <form method="post">
+                    <input type="hidden" value="<?php echo $task["id"]; ?>" name="id">
+                <td scope="col">
+                    <input type="text" name="title" value="<?php echo $task["title"]; ?>">
+                </td>
+
+                <td scope="col">
+                    <textarea cols="10" name="caption"><?php echo $task["caption"]; ?></textarea>
+                </td>
+
+                <td scope="col">
+                <input type="date" name="date" min="<?php echo date("Y-m-d"); ?>" value="<?php echo $task["date"]; ?>">
+                </td>
+
+                <td scope="col" class="">
+                    <select name="user">
+                        <option value="0">Brak</option>
+                        <?php
+                    $users = mysqli_query($c, "SELECT * FROM `users`;");
+                    while($user = mysqli_fetch_array($users)){
+                        echo '<option value="' . $user["id"] . '">' . $user["login"] . "</option>";
+                    }
+                    ?>
+                    </select>
+                </td>
+
+                <td scope="col" class="">
+                    <input type="number" style="width: 50px;" min="1" max="5" name="priority" value="<?php echo $task["priority"]; ?>">
+                </td>
+
+                <td scope="col" style="padding: 5px 0px 0px 5px;\">
+                    
+                        <input type="submit" value="edytuj" class="btn btn-primary btn-sm">
+                    
+                    </td>
+
+                <td scope="col">
+                <a class="ms-3 text-danger" href="edit.php?delete=<?php echo $task["id"]; ?>">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
+                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
+                    </svg>
+                    </a>
+                </td>
+                </form>
+            </tr>
+
+            <?php
+
+        }
+        else {
+
+        
         ?>
             <tr>
                 <td scope="col">
@@ -182,6 +258,7 @@ if(isset($_GET["edit"])){
                 </td>
             </tr>
         <?php
+    }
     } 
     ?>
 </div>
